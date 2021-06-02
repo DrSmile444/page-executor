@@ -7,13 +7,13 @@ export interface ExecutorOptions {
     location: Location;
 }
 
-export type ExecutorCallback<T> = (options: ExecutorOptions) => T;
+export type ExecutorPredicate<T> = (options: ExecutorOptions) => T;
 
 export class PageExecutor<T> {
-  private callback: ExecutorCallback<T> | undefined;
+  private predicate: ExecutorPredicate<T> | undefined;
 
-  constructor(callback?: ExecutorCallback<T>) {
-    this.callback = callback;
+  constructor(predicate?: ExecutorPredicate<T>) {
+    this.predicate = predicate;
   }
 
   /**
@@ -21,9 +21,9 @@ export class PageExecutor<T> {
    */
   perPage(
     links: string | string[],
-    callback: ExecutorCallback<T> | undefined = this.callback,
+    predicate: ExecutorPredicate<T> | undefined = this.predicate,
   ): Promise<T[]> {
-    if (!callback) {
+    if (!predicate) {
       throw new Error('No callback passed to PageExecutor. Pass it to constructor or to a method directly.');
     }
 
@@ -41,7 +41,7 @@ export class PageExecutor<T> {
         const { document } = window;
         const { location } = window;
 
-        return callback({ window, document, location });
+        return predicate({ window, document, location });
       }));
   }
 }
