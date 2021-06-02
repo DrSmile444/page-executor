@@ -2,9 +2,9 @@ import axios from 'axios';
 import { DOMWindow, JSDOM } from 'jsdom';
 
 export interface ExecutorOptions {
-    window: DOMWindow;
-    document: Document;
-    location: Location;
+  window: DOMWindow;
+  document: Document;
+  location: Location;
 }
 
 export type ExecutorPredicate<T> = (options: ExecutorOptions) => T;
