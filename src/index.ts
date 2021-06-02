@@ -38,8 +38,7 @@ export class PageExecutor<T> {
     return Promise.all(pagePromises).then((pages) => pages
       .map((page, linkIndex) => {
         const { window } = new JSDOM(page, { url: linksArray[linkIndex] });
-        const { document } = window;
-        const { location } = window;
+        const { document, location } = window;
 
         return predicate({ window, document, location });
       }));
