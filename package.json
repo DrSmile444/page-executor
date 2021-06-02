@@ -8,6 +8,8 @@
     "/dist"
   ],
   "scripts": {
+    "prepublish": "tsc",
+    "prepack": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
@@ -18,6 +20,10 @@
       "url": "https://github.com/DrSmile444"
     }
   ],
+  "repository": {
+    "url": "https://github.com/DrSmile444/page-executor.git",
+    "type": "git"
+  },
   "keywords": [
     "page",
     "script",
