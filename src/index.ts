@@ -10,7 +10,7 @@ export interface ExecutorOptions {
 export type ExecutorPredicate<T> = (options: ExecutorOptions) => T;
 
 export class PageExecutor<T> {
-  private predicate: ExecutorPredicate<T> | undefined;
+  private predicate: ExecutorPredicate<T | any> | undefined;
 
   constructor(predicate?: ExecutorPredicate<T>) {
     this.predicate = predicate;
@@ -19,10 +19,10 @@ export class PageExecutor<T> {
   /**
    * Execute passed callback for each page
    */
-  perPage(
+  perPage<D extends any = T>(
     links: string | string[],
-    predicate: ExecutorPredicate<T> | undefined = this.predicate,
-  ): Promise<T[]> {
+    predicate: ExecutorPredicate<D> | undefined = this.predicate,
+  ): Promise<D[]> {
     if (!predicate) {
       throw new Error('No callback passed to PageExecutor. Pass it to constructor or to a method directly.');
     }
@@ -36,8 +36,8 @@ export class PageExecutor<T> {
       .then((res) => res.data));
 
     return Promise.all(pagePromises).then((pages) => pages
-      .map((page, linkIndex) => new JSDOM(page, { url: links[linkIndex] }))
-      .map(({ window }) => {
+      .map((page, linkIndex) => {
+        const { window } = new JSDOM(page, { url: linksArray[linkIndex] });
         const { document } = window;
         const { location } = window;
 

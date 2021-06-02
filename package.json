@@ -1,6 +1,6 @@
 {
   "name": "page-executor",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "description": "Execute your JS code on multiple pages using Node.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

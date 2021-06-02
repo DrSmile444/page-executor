@@ -15,7 +15,8 @@ Promise based pages code executor for Node.js
 
 ## Features
 
-- Emulates full DOM tree and gives access to elements 
+- [x] Emulates full DOM tree and gives access to elements
+- [ ] Add puppeteer to create screenshots and etc
 
 ## Installing
 
@@ -36,8 +37,8 @@ const { PageExecutor } = require('page-executor');
 const pageExecutor = new PageExecutor();
 // or create with default predicate
 const pageExecutor = new PageExecutor(({ document }) => {
-  const rootElement = document.querySelector('#appMountPoint, #app-mount');
-  return rootElement && rootElement.innerText || 'No root element';
+  const rootElement = document.querySelector('button');
+  return (rootElement && rootElement.innerHTML) || 'No element';
 });
 ```
 
@@ -71,9 +72,9 @@ pageExecutor
   .perPage('https://smile-track.web.app', ({ document }) => document.title)
   .then((title) => console.log(title));
 
-pageExecutor
-  .perPage('https://www.paypal.com', ({ document }) => document.querySelector('[aria-label="Get Started"]'))
-  .then((labelNode) => console.log(labelNode));
+executor
+  .perPage('https://developer.mozilla.org', ({ document }) => document.querySelector('#skip-main').innerHTML)
+  .then((label) => console.log(label));
 ```
 
 ## TypeScript
