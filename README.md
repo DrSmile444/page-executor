@@ -7,11 +7,18 @@
 Promise based pages code executor for Node.js 
 ## Table of Contents
 
+  - [Why](#why)
   - [Features](#features)
   - [Installing](#installing)
   - [Example](#example)
   - [TypeScript](#typescript)
   - [License](#license)
+
+## Why
+
+Imagine you need to run one script across multiple sites (e.g., scrape data). You open site by site, wait until the content is loaded, and execute your script.
+
+It could work unless you have 20+ sites. To solve this problem, you can use this package and run multiple sites immediately to save your time. 
 
 ## Features
 

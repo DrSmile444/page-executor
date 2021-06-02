@@ -1,0 +1,4 @@
+https://www.typescriptlang.org/
+https://www.npmjs.com/
+https://angular.io/guide/architecture
+https://www.npmjs.com/package/smile-track
