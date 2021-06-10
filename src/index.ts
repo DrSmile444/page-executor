@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { DOMWindow, JSDOM } from 'jsdom';
 
 export interface ExecutorOptions {
@@ -22,7 +22,7 @@ export class PageExecutor<T> {
   perPage<D extends any = T>(
     links: string | string[],
     predicate: ExecutorPredicate<D> | undefined = this.predicate,
-  ): Promise<D[]> {
+  ): Promise<(D | null)[]> {
     if (!predicate) {
       throw new Error('No callback passed to PageExecutor. Pass it to constructor or to a method directly.');
     }
@@ -32,12 +32,23 @@ export class PageExecutor<T> {
       : [links];
 
     const pagePromises: Promise<string>[] = linksArray.map((link) => axios
-      .get(link)
-      .then((res) => res.data));
+      .get(link, {
+        headers: {
+          'Content-Type': 'text/html; charset=UTF-8',
+        },
+        responseType: 'text',
+      })
+      .then((res) => res.data)
+      .catch((error: AxiosError) => '<title>Invalid URL</title>'));
 
     return Promise.all(pagePromises).then((pages) => pages
-      .map((page, linkIndex) => {
-        const { window } = new JSDOM(page, { url: linksArray[linkIndex] });
+      .map((page, linkIndex) => new JSDOM(page, { url: linksArray[linkIndex] }))
+      .map((dom) => {
+        if (!dom) {
+          return null;
+        }
+
+        const { window } = dom;
         const { document, location } = window;
 
         return predicate({ window, document, location });
